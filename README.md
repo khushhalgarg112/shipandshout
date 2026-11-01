@@ -88,7 +88,7 @@ a 500 so the form shows its mailto fallback instead of silently dropping leads.
 Set these env vars in your host (Vercel recommended):
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://shipandshout.com   # your real domain — drives canonical URLs & sitemap
+NEXT_PUBLIC_SITE_URL=https://shipnshout.com   # your real domain — drives canonical URLs & sitemap
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 RESEND_API_KEY=re_...                            # contact form delivery (server-only)
 CONTACT_FROM_EMAIL="Brand Name <leads@yourdomain.com>"     # after verifying the domain in Resend

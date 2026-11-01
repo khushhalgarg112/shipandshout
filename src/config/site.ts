@@ -25,7 +25,7 @@ export const site = {
   /** Short form used in tight spaces (manifest, favicon). */
   shortName: initials(BRAND_NAME),
   /** Registered domain — set NEXT_PUBLIC_SITE_URL in .env for deploys. */
-  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://shipandshout.com").replace(/\/$/, ""),
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://shipnshout.com").replace(/\/$/, ""),
   locale: "en_US",
   tagline: "We ship products. Then we make them loud.",
   /** Keyword-led title used on the home page and as the default <title>. */
@@ -47,8 +47,8 @@ export const site = {
     "developer marketing",
     "B2B tech influencer marketing",
   ],
-  /** Primary contact until domain email is configured. */
-  email: "anujjangra536@gmail.com",
+  /** Official inbox on the shipnshout.com domain. */
+  email: "hello@shipnshout.com",
   founded: 2026,
   location: "Haryana, India — working worldwide",
   address: { region: "Haryana", country: "IN" },

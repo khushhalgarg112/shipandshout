@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown, CircleCheck } from "lucide-react";
+import { sendGAEvent } from "@next/third-parties/google";
 import { Button } from "@/components/ui/Button";
 import { site } from "@/config/site";
 
@@ -91,6 +92,11 @@ export function ContactForm() {
       });
       if (!res.ok) throw new Error(`Request failed with ${res.status}`);
       setStatus("success");
+      // GA4 lead conversion — no-op when NEXT_PUBLIC_GA_ID is unset. Never send PII here.
+      sendGAEvent("event", "generate_lead", {
+        interest: values.interest || "(none)",
+        budget: values.budget || "(none)",
+      });
     } catch {
       setStatus("error");
     }

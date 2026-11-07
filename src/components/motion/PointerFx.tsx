@@ -31,15 +31,16 @@ export function PointerFx() {
       if (!event) return;
       const { clientX: x, clientY: y, target } = event;
 
+      const el = target instanceof Element ? target.closest<HTMLElement>("[data-tilt]") : null;
+      const rect = el?.getBoundingClientRect();
+
       root.style.setProperty("--px", ((x / window.innerWidth) * 2 - 1).toFixed(3));
       root.style.setProperty("--py", ((y / window.innerHeight) * 2 - 1).toFixed(3));
 
-      const el = target instanceof Element ? target.closest<HTMLElement>("[data-tilt]") : null;
       if (active && active !== el) release(active);
       active = el;
-      if (!el) return;
+      if (!el || !rect) return;
 
-      const rect = el.getBoundingClientRect();
       const nx = (x - rect.left) / rect.width;
       const ny = (y - rect.top) / rect.height;
       const max = Number(el.dataset.tilt) || 8;
@@ -51,20 +52,29 @@ export function PointerFx() {
     };
 
     const onMove = (e: PointerEvent) => {
+      if (reduce.matches) return;
       event = e;
       if (!frame) frame = requestAnimationFrame(apply);
     };
     const onLeave = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      event = null;
       if (active) release(active);
       active = null;
+      root.style.setProperty("--px", "0");
+      root.style.setProperty("--py", "0");
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
     document.addEventListener("pointerleave", onLeave);
+    reduce.addEventListener("change", onLeave);
     return () => {
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("pointerleave", onLeave);
+      reduce.removeEventListener("change", onLeave);
       cancelAnimationFrame(frame);
+      if (active) release(active);
     };
   }, []);
 

@@ -11,17 +11,16 @@ import { CtaBand } from "@/components/home/CtaBand";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { webPageLd } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
-import { audience, brandPartnerships, engines, showcase, site } from "@/config/site";
+import { brandPartnerships, engines, showcase, site } from "@/config/site";
 
-const combined = `${audience.combined.value}${audience.combined.suffix}`;
-const title = "Work & Campaign Results";
-const description = `Sponsored-campaign results from ${brandPartnerships} brand partnerships in front of ${combined} tech professionals, plus the web, mobile and AI products we ship.`;
+const title = "Campaign Results & Build Capabilities";
+const description = `Explore ${site.name}'s creator campaign highlights and web, mobile, SaaS and AI development capabilities. Discuss your next build or launch.`;
 
 export const metadata = pageMetadata({
   title,
   description,
   path: "/work",
-  keywords: ["agency portfolio", "sponsored post results", "SaaS case studies", "creator campaign results"],
+  keywords: ["agency capabilities", "sponsored post results", "SaaS development", "creator campaign results"],
 });
 
 export default function WorkPage() {
@@ -35,7 +34,7 @@ export default function WorkPage() {
         eyebrow="The proof"
         title={
           <>
-            Shipped and <span className="text-flame">shouted.</span>
+            Creator campaign results &amp; <span className="text-flame">development capabilities.</span>
           </>
         }
         lead={

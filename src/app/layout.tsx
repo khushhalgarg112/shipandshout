@@ -9,6 +9,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { founderLd, organizationLd, websiteLd } from "@/lib/jsonld";
 import { site, founder } from "@/config/site";
 import "./globals.css";
+import "./visual-polish.css";
 
 // One variable font file for display + body keeps the critical path short.
 const geist = Geist({
@@ -17,7 +18,7 @@ const geist = Geist({
   display: "swap",
 });
 
-const homeTitle = `${site.name} — ${site.seoTitle}`;
+const homeTitle = `${site.seoTitle} — ${site.name}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -70,6 +71,7 @@ export const viewport: Viewport = {
   colorScheme: "light",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

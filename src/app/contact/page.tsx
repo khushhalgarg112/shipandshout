@@ -9,8 +9,8 @@ import { webPageLd } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 import { site, founder } from "@/config/site";
 
-const title = "Start a Project";
-const description = `Start a project with ${site.name}. Send a short brief or email us about a build or a creator campaign — every serious inquiry gets a reply within 24 hours.`;
+const title = "Contact — Build or Launch a Product";
+const description = `Tell ${site.name} about your build or creator campaign. Share your scope, timeline and budget, or contact the team directly by email.`;
 
 export const metadata = pageMetadata({
   title,
@@ -47,7 +47,7 @@ export default function ContactPage() {
             hours.
           </p>
         }
-        visual={<Rings className="mx-auto size-72 sm:size-96" />}
+        visual={<Rings className="contact-rings mx-auto" />}
       />
 
       <Section className="pt-0 sm:pt-0">
@@ -59,7 +59,7 @@ export default function ContactPage() {
                 <p className={sideLabelCls}>Email</p>
                 <a
                   href={`mailto:${site.email}`}
-                  className="mt-4 flex w-fit items-center gap-2.5 break-all text-display text-2xl text-ink underline decoration-line-strong decoration-1 underline-offset-[6px] transition-colors hover:text-flame-deep hover:decoration-flame"
+                  className="touch-target contact-email mt-4 flex w-fit items-center gap-2.5 text-display text-2xl text-ink underline decoration-line-strong decoration-1 underline-offset-[6px] transition-colors hover:text-flame-deep hover:decoration-flame"
                 >
                   <Mail size={22} aria-hidden className="shrink-0" />
                   {site.email}

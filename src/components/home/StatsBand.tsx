@@ -14,7 +14,7 @@ export function StatsBand() {
         <div className="grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
           {audience.stats.map((stat, i) => (
             <Reveal key={stat.label} delay={i * 0.08} className="border-t hairline pt-6">
-              <p className="text-display text-6xl text-ink sm:text-7xl">
+              <p className="stat-value text-display text-ink">
                 <Counter
                   value={stat.value}
                   suffix={stat.suffix}

@@ -29,7 +29,7 @@ export function FaqList({ items }: { items: readonly Faq[] }) {
                 href={item.link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 inline-flex items-center gap-1.5 font-medium text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:text-flame-deep"
+                className="touch-target mt-3 inline-flex items-center gap-1.5 font-medium text-ink underline decoration-line-strong underline-offset-4 transition-colors hover:text-flame-deep"
               >
                 {item.link.label}
                 <ArrowUpRight size={16} aria-hidden />

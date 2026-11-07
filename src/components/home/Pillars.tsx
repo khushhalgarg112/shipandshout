@@ -48,7 +48,7 @@ export function Pillars() {
         align="split"
         eyebrow="01 — What we do"
         title="Two engines. One flywheel."
-        lead={`One team builds the product. The other puts it in front of ${combined} people who buy software. Every build gives the audience something worth talking about — and the audience gives every launch a running start.`}
+        lead={`One team builds the product. The other plans its launch through creator channels with ${combined} combined followers. Product engineering and creator-led distribution work together from the brief onward.`}
       />
 
       <div className="grid gap-5 lg:grid-cols-2">
@@ -66,7 +66,7 @@ export function Pillars() {
               Creator marketing
             </h3>
             <p className="mt-5 max-w-md leading-relaxed text-ink-muted">
-              Sponsored campaigns to {combined} tech professionals across LinkedIn and X — written
+              Sponsored campaigns through LinkedIn and X channels with {combined} combined followers — written
               in {founder.displayName}&rsquo;s voice, reviewed with you before publishing, and
               reported with real numbers.
             </p>
@@ -110,7 +110,7 @@ export function Pillars() {
                 <li key={service.slug}>
                   <Link
                     href={`/development#${service.slug}`}
-                    className="relative z-10 inline-block rounded-full border border-line-strong px-3.5 py-1.5 text-sm text-ink-muted transition-colors hover:border-ink hover:bg-ink hover:text-canvas"
+                    className="touch-target relative z-10 inline-block rounded-full border border-line-strong px-3.5 py-1.5 text-sm text-ink-muted transition-colors hover:border-ink hover:bg-ink hover:text-canvas"
                   >
                     {service.title}
                   </Link>

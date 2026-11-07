@@ -47,7 +47,7 @@ export function renderOg({
   /** Optional trailing words rendered in flame. */
   accent?: string;
 }) {
-  const footer = `${audience.combined.value}${audience.combined.suffix} audience · ${brandPartnerships} brand partners · ${site.url.replace(/^https?:\/\//, "")}`;
+  const footer = `${audience.combined.value}${audience.combined.suffix} combined followers · ${brandPartnerships} brand partners · ${site.url.replace(/^https?:\/\//, "")}`;
 
   return new ImageResponse(
     (

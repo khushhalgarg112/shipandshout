@@ -12,6 +12,18 @@
  */
 const BRAND_NAME = "Ship & Shout";
 
+const canonicalOrigin = new URL(
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://shipnshout.com",
+);
+if (
+  canonicalOrigin.protocol !== "https:" ||
+  canonicalOrigin.pathname !== "/" ||
+  canonicalOrigin.search || canonicalOrigin.hash ||
+  canonicalOrigin.username || canonicalOrigin.password
+) {
+  throw new Error("NEXT_PUBLIC_SITE_URL must be an HTTPS origin without a path, query or credentials.");
+}
+
 /** "Ship & Shout" → "S&S", "Acme Labs" → "AL". */
 function initials(name: string): string {
   return name
@@ -25,15 +37,15 @@ export const site = {
   /** Short form used in tight spaces (manifest, favicon). */
   shortName: initials(BRAND_NAME),
   /** Registered domain — set NEXT_PUBLIC_SITE_URL in .env for deploys. */
-  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://shipnshout.com").replace(/\/$/, ""),
+  url: canonicalOrigin.origin,
   locale: "en_US",
   tagline: "We ship products. Then we make them loud.",
   /** Keyword-led title used on the home page and as the default <title>. */
   seoTitle: "Product Engineering & Creator Marketing Agency",
   /** ≤160 chars — the home page meta description. */
   metaDescription:
-    "Senior product engineering for web, mobile, SaaS and AI — plus creator-led launches to 117K+ tech professionals on LinkedIn and X. Build it, then make it loud.",
-  description: `${BRAND_NAME} is a hybrid agency pairing full-stack product engineering — web, mobile, SaaS, SEO and large-scale systems — with creator-led distribution to an audience of 117K+ tech professionals.`,
+    `Build web, mobile and SaaS products, then launch with creator-led LinkedIn and X campaigns. Talk to ${BRAND_NAME} about your project.`,
+  description: `${BRAND_NAME} pairs product engineering for web, mobile, SaaS and AI with creator-led marketing on LinkedIn and X. Work with one team to scope your product, build it and plan its launch.`,
   keywords: [
     "product engineering agency",
     "creator marketing agency",
@@ -70,17 +82,25 @@ export const engines = {
   shout: { label: "Shout", name: "Creator marketing", href: "/marketing" },
 } as const;
 
+export const homeHero = {
+  eyebrow: "Product engineering + creator marketing",
+  headline: ["Built to ship.", "Made to shout."],
+  visualCaption: "One studio. From first build to launch day.",
+  shipDetail: "Web, mobile & SaaS",
+  shoutDetail: "LinkedIn & X campaigns",
+} as const;
+
 export const founder = {
   name: "Anuj Jangra",
   displayName: "Anuj J.",
   role: "Co-founder — Distribution & Partnerships",
   handle: "@anujcodes_21",
-  bio: "AI evangelist and creator with a combined audience of 117K+ across LinkedIn and X. Anuj has partnered with 1000+ brands on sponsored campaigns and hosts a 5,000+ member Telegram community focused on AI tools and careers.",
+  bio: "AI evangelist and creator with 117K+ combined followers across LinkedIn and X. Anuj has partnered with 1000+ brands on sponsored campaigns and hosts a 5,000+ member Telegram community focused on AI tools and careers.",
 } as const;
 
 /** Audience numbers as reported on the Passionfroot media kit. */
 export const audience = {
-  combined: { value: 117, suffix: "K+", label: "Combined audience" },
+  combined: { value: 117, suffix: "K+", label: "Combined followers" },
   linkedin: {
     followers: "87.2K",
     impressions: "42K avg. impressions",
@@ -93,7 +113,7 @@ export const audience = {
   },
   stats: [
     { value: 117, suffix: "K+", label: "Combined followers" },
-    { value: 9.5, suffix: "M+", label: "Content impressions", decimals: 1 },
+    { value: 9.5, suffix: "M+", label: "Lifetime X impressions", decimals: 1 },
     { value: 5.6, suffix: "%", label: "Avg. X engagement", decimals: 1 },
     { value: 1000, suffix: "+", label: "Brand partnerships" },
   ],
@@ -336,7 +356,7 @@ export const showcase = [
     description:
       "Multi-tenant analytics with role-based access, usage-based billing and dashboards that stay fast over millions of rows.",
     stack: ["Next.js", "PostgreSQL", "Stripe", "Redis"],
-    href: "/development#saas-development",
+    href: "/development/saas-mvp-development",
   },
   {
     slug: "headless-commerce",
@@ -356,7 +376,7 @@ export const showcase = [
     description:
       "Retrieval-grounded chat, tool-calling agents and eval harnesses wired into existing products — with cost ceilings that hold.",
     stack: ["Claude API", "RAG", "Evals"],
-    href: "/development#ai-integration",
+    href: "/development/ai-integration",
   },
   {
     slug: "mobile-app",
@@ -372,8 +392,17 @@ export const showcase = [
 
 export type ShowcaseItem = (typeof showcase)[number];
 
-/** Real campaign outcomes pulled from public posts — used instead of invented testimonials. */
-export const campaignHighlights = [
+export type CampaignHighlight = {
+  brand: string;
+  format: string;
+  result: string;
+  note: string;
+  /** Add only after checking the exact post and recording its counts on this date. */
+  evidence?: { sourceUrl: string; observedAt: `${number}-${number}-${number}` };
+};
+
+/** Existing reported outcomes. Evidence is optional until the exact post/date is supplied. */
+export const campaignHighlights: readonly CampaignHighlight[] = [
   {
     brand: "AI design tool launch",
     format: "LinkedIn sponsored post",
@@ -394,6 +423,78 @@ export const campaignHighlights = [
   },
 ] as const;
 
+export type ServicePage = {
+  slug: string;
+  serviceSlug: (typeof devServices)[number]["slug"];
+  title: string;
+  description: string;
+  heading: string;
+  answer: string;
+  scope: readonly { title: string; body: string }[];
+  steps: readonly { title: string; body: string }[];
+  considerations: string;
+  preparation: readonly string[];
+  faqs: readonly Faq[];
+};
+
+/** Detailed service content shared by pages, metadata, sitemap and text summaries. */
+export const servicePages: readonly ServicePage[] = [
+  {
+    slug: "saas-mvp-development",
+    serviceSlug: "saas-development",
+    title: "SaaS & MVP Development",
+    description: "Scope and build a SaaS MVP with authentication, billing and multi-tenant architecture. Explore deliverables, launch planning and handover.",
+    heading: "SaaS MVP development, from scope to launch.",
+    answer: `${BRAND_NAME} builds SaaS MVPs around a defined customer workflow, with authentication, billing and administration scoped to the product. Start with the smallest usable release, agree on acceptance criteria, then plan the architecture and delivery milestones. Ongoing maintenance and further development can be scoped after launch.`,
+    scope: [
+      { title: "Customer workflows", body: "Define the first user's journey, the roles involved and what a successful task looks like. Keep optional features outside the initial release so the MVP tests a clear product idea." },
+      { title: "Accounts and tenancy", body: "Plan authentication, organization membership and permissions together. For a multi-tenant product, decide how customer data is separated and which actions each role can perform." },
+      { title: "Billing and administration", body: "Scope subscription billing, account administration and the operational views your team needs. Integrations and billing rules depend on the product; agree on them before implementation." },
+    ],
+    steps: [
+      { title: "Scope the first release", body: "Bring the customer problem, key workflows and existing designs or code. Agree on deliverables, exclusions and acceptance criteria before estimating the build." },
+      { title: "Build the core product", body: "Implement the agreed application, data model, authentication and integrations. Use regular demos to review working flows and surface decisions while changes are still manageable." },
+      { title: "Prepare for launch and handover", body: "Review the release against acceptance criteria, configure the agreed deployment and document how to run the product. Confirm ownership, access and the post-launch support window in the project scope." },
+    ],
+    considerations: "The development overview describes a typical MVP as a 4–8 week build. That is a planning range, not a guaranteed deadline: data migration, permissions, third-party integrations and app complexity can change the scope. A dated delivery plan follows scoping; a smaller first release is often easier to estimate.",
+    preparation: ["The customer problem and primary user workflow", "Must-have features and what can wait", "Existing designs, repositories and integrations", "Target launch timing and budget constraints"],
+    faqs: [
+      { q: "What should a SaaS MVP include?", a: "An MVP should let an intended customer complete the product's core workflow. Authentication, billing, permissions and an admin view belong in the first release when that workflow needs them. Agree on what can wait before building; an MVP is a focused usable product rather than a list of every planned feature." },
+      { q: "Can you continue an existing SaaS codebase?", a: "Yes. Existing products start with an audit of architecture, dependencies, tests and performance. The resulting plan identifies what can be extended, what needs attention and whether any proposed rewrite is justified before further development is scoped." },
+      { q: "Who owns the SaaS code after delivery?", a: "You own the code, designs, infrastructure and documentation. Accounts, access and handover are agreed during scoping, and ownership is transferred to accounts you control. The project quote defines the support window and any ongoing maintenance arrangement." },
+    ],
+  },
+  {
+    slug: "ai-integration",
+    serviceSlug: "ai-integration",
+    title: "AI Integration Services",
+    description: "Add LLM features, RAG search and agent workflows to an existing product. Plan data access, evaluation, cost limits and ongoing maintenance.",
+    heading: "AI integration for the product you already run.",
+    answer: `${BRAND_NAME} integrates LLM-powered chat, semantic search and agent workflows into existing applications. Start with a specific user task, identify the data the feature can access and define how to evaluate its output. Scope model usage, permissions and cost limits alongside the interface so the feature fits the product's operating needs.`,
+    scope: [
+      { title: "Retrieval and semantic search", body: "For features that answer from your own content, scope document ingestion, retrieval and source presentation. Plan how updates enter the index and how permissions limit which information a user can retrieve." },
+      { title: "Chat and agent workflows", body: "Connect an assistant to the product's existing interface and approved tools. Define which actions it can take, which need a person's review and how failures return control to the user." },
+      { title: "Evaluation and operating costs", body: "Use representative tasks to evaluate usefulness, response quality and failure behavior. Plan model usage and cost ceilings as part of the feature rather than treating a successful demo as a complete release." },
+    ],
+    steps: [
+      { title: "Choose a task and data boundary", body: "Bring the user problem, example inputs and the systems involved. Identify sensitive information, access rules and actions that must remain under human control." },
+      { title: "Integrate and evaluate", body: "Connect the scoped model, retrieval sources or tools to the application. Review representative outputs and failure cases against agreed criteria before expanding the workflow." },
+      { title: "Plan release and ongoing review", body: "Agree on deployment, usage monitoring and ownership of model or data changes. Decide who reviews failures and when prompts, retrieval or model choices need to be evaluated again." },
+    ],
+    considerations: "Retrieval can provide relevant source material, but it does not guarantee correct answers. An agent's tool access also needs explicit boundaries. The right scope depends on the consequences of an incorrect answer, data sensitivity, expected request volume and latency; those constraints should shape the first release.",
+    preparation: ["A specific task and examples of useful output", "The existing application and data sources", "Permissions, sensitive data and approval requirements", "Expected usage, latency needs and operating budget"],
+    faqs: [
+      { q: "Do we need RAG or model fine-tuning?", a: "The choice depends on the task and evidence from evaluation. Retrieval can help when answers need access to a changing knowledge base; fine-tuning addresses different needs and does not replace data permissions or testing. Start by defining the required output and testing a simpler baseline before adding complexity." },
+      { q: "Can an AI agent take actions inside our application?", a: "An agent can be integrated with approved application tools, but its scope should define allowed actions, access rules and which steps require human confirmation. Plan failure handling and auditability alongside the workflow. Available integrations depend on your existing systems and the agreed project scope." },
+      { q: "How are AI integration costs scoped?", a: "Separate the development engagement from ongoing model, hosting and data-processing usage. Expected request volume, model choice, retrieval and workflow length affect operating costs. Bring usage assumptions to scoping so the team can define an initial approach and cost limits without promising an unsupported per-request price." },
+    ],
+  },
+];
+
+export function servicePagePath(service: Pick<ServicePage, "slug">): `/development/${string}` {
+  return `/development/${service.slug}`;
+}
+
 export const nav = [
   { label: "Development", href: "/development" },
   { label: "Marketing", href: "/marketing" },
@@ -407,9 +508,9 @@ export const footerNav = {
     { label: "Campaign Packages", href: "/marketing#packages" },
     { label: "Web Development", href: "/development#web-development" },
     { label: "Mobile Apps", href: "/development#app-development" },
-    { label: "SaaS & MVP", href: "/development#saas-development" },
+    { label: "SaaS & MVP", href: "/development/saas-mvp-development" },
     { label: "SEO & Performance", href: "/development#seo" },
-    { label: "AI Integration", href: "/development#ai-integration" },
+    { label: "AI Integration", href: "/development/ai-integration" },
     { label: "Hourly Development", href: "/development#hourly" },
     { label: "Maintenance & Support", href: "/development#maintenance" },
   ],
@@ -425,6 +526,7 @@ export const footerNav = {
 export const routes = [
   { path: "/", priority: 1, changeFrequency: "weekly" },
   { path: "/development", priority: 0.9, changeFrequency: "monthly" },
+  ...servicePages.map((service) => ({ path: servicePagePath(service), priority: 0.8, changeFrequency: "monthly" as const })),
   { path: "/marketing", priority: 0.9, changeFrequency: "monthly" },
   { path: "/work", priority: 0.8, changeFrequency: "monthly" },
   { path: "/about", priority: 0.7, changeFrequency: "monthly" },
@@ -434,8 +536,14 @@ export const routes = [
 
 export type Faq = { q: string; a: string; link?: { label: string; href: string } };
 
+export const engagementAnswer = "Choose a fixed-scope project when deliverables are clear, hourly development for smaller changes or uncertain scope, and a retainer for ongoing work. Maintenance covers existing applications, while an embedded team joins your working process. Start with a scoping call to agree on responsibilities, reporting and the right engagement for your product.";
+
 /** Development FAQ — rendered on /development and emitted as FAQPage JSON-LD. */
 export const devFaqs: readonly Faq[] = [
+  {
+    q: "Should I choose a project, hourly development or a retainer?",
+    a: engagementAnswer,
+  },
   {
     q: "How does pricing work?",
     a: "Every engagement starts with a short call. Fixed-scope projects get a fixed quote before any code is written; hourly work is billed for tracked time with weekly reports; retainers, maintenance plans and embedded teams run on a flat monthly rate. No surprise invoices.",

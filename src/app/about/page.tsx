@@ -13,8 +13,8 @@ import { site, founder, audience, engines } from "@/config/site";
 const combinedAudience = `${audience.combined.value}${audience.combined.suffix}`;
 const partnerships = audience.stats[3];
 
-const title = "About the Founder & Team";
-const description = `From first posts on X to a ${combinedAudience} audience, ${partnerships.value}${partnerships.suffix} brand partnerships and a senior engineering team — the story, values and people behind ${site.name}.`;
+const title = `About ${founder.name} & the Team`;
+const description = `Meet ${founder.name} and the team behind ${site.name}, combining product engineering with creator-led distribution for product launches.`;
 
 export const metadata = pageMetadata({
   title,
@@ -99,13 +99,13 @@ export default function AboutPage() {
         eyebrow="About"
         title={
           <>
-            The story <span className="text-flame">so far.</span>
+            About {site.name} and <span className="text-flame">{founder.name}.</span>
           </>
         }
         lead={
           <p>
             {site.name} didn&apos;t start as an agency. It started with one engineer posting what
-            he learned — and the {combinedAudience} people who showed up to read it.
+            he learned — and grew to {combinedAudience} combined followers across LinkedIn and X.
           </p>
         }
         visual={
@@ -196,7 +196,7 @@ export default function AboutPage() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-ink hover:bg-ink hover:text-canvas"
+                      className="touch-target inline-flex items-center gap-1.5 rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-ink hover:bg-ink hover:text-canvas"
                     >
                       {social.label}
                       <ArrowUpRight size={16} aria-hidden />

@@ -20,13 +20,13 @@ const seo = pageMetadata({
   path: "/",
 });
 
-const homeTitle = `${site.name} — ${site.seoTitle}`;
+const homeTitle = `${site.seoTitle} — ${site.name}`;
 
-// The home page leads with the brand rather than using the title template.
+// An absolute title avoids appending the brand a second time.
 export const metadata: Metadata = {
   ...seo,
   title: { absolute: homeTitle },
-  openGraph: { ...seo.openGraph, title: `${site.name} — ${site.tagline}` },
+  openGraph: { ...seo.openGraph, title: homeTitle },
   twitter: { ...seo.twitter, title: homeTitle },
 };
 

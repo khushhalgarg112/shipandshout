@@ -81,9 +81,21 @@ import { pageMetadata } from "@/lib/seo";
 
 ## Motion rules
 
+- Home hero: a left-aligned two-line headline and a framed orbital visual showing the Ship
+  and Shout engines. Keep primary text immediately visible. Home copy lives in `homeHero`
+  in the site config; the 3D object is decorative, with a visible figure caption.
+- Ribbons: separate in-flow rows on phones, with gentle angles only at desktop sizes.
+  Two identical marquee groups each cover at least their viewport, so the loop travels
+  exactly half a track without exposing an empty region. Never absolutely overlay the tapes.
+- Reduced-motion ribbons: no transforms, no duplicate copy displayed, and a readable 2/3/5-column
+  roster. Movement starts only after an explicit Play action. Pause/Resume remains available.
+- `src/app/visual-polish.css` contains these scoped visual refinements and imports after
+  the core tokens in the root layout. Keep colors tied to the existing semantic tokens.
+
 - Entrance: `<Reveal>` (server component; `RevealScript` animates it with WAAPI, once).
   Stagger with `delay` 0, 0.08, 0.16… Keep transforms off the Reveal element itself.
-- Above-the-fold hero text uses CSS keyframes (`animate-line-up`/`animate-fade-up`), never Reveal.
+- Above-the-fold hero headings and lead copy stay visible from first paint. Decorative
+  elements and secondary actions may use CSS keyframes; never Reveal the primary text.
 - Micro-interactions in CSS. No animation libraries. Everything respects reduced motion.
 
 ## SEO rules

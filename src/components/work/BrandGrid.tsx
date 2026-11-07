@@ -71,7 +71,7 @@ export function BrandGrid({ eyebrow }: { eyebrow: string }) {
           href={site.links.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 py-2 text-sm font-semibold text-ink underline decoration-line-strong underline-offset-4 transition-colors duration-300 hover:text-flame-deep"
+          className="touch-target inline-flex items-center gap-2 py-2 text-sm font-semibold text-ink underline decoration-line-strong underline-offset-4 transition-colors duration-300 hover:text-flame-deep"
         >
           See every campaign on LinkedIn
           <span aria-hidden>↗</span>

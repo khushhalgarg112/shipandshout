@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown, CircleCheck } from "lucide-react";
 import { sendGAEvent } from "@next/third-parties/google";
 import { Button } from "@/components/ui/Button";
@@ -61,9 +61,15 @@ function validate(values: Values): Partial<Record<ErrorField, string>> {
 }
 
 export function ContactForm() {
+  const formRef = useRef<HTMLFormElement>(null);
+  const successRef = useRef<HTMLDivElement>(null);
   const [values, setValues] = useState<Values>(emptyValues);
   const [errors, setErrors] = useState<Partial<Record<ErrorField, string>>>({});
   const [status, setStatus] = useState<Status>("idle");
+
+  useEffect(() => {
+    if (status === "success") successRef.current?.focus();
+  }, [status]);
 
   const update =
     (field: keyof Values) =>
@@ -81,14 +87,21 @@ export function ContactForm() {
     const nextErrors = validate(values);
     if (Object.values(nextErrors).some(Boolean)) {
       setErrors(nextErrors);
+      const firstInvalid = Object.keys(nextErrors)[0];
+      requestAnimationFrame(() => {
+        formRef.current?.querySelector<HTMLElement>(`[name="${firstInvalid}"]`)?.focus();
+      });
       return;
     }
     setStatus("submitting");
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 20_000);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
+        signal: controller.signal,
       });
       if (!res.ok) throw new Error(`Request failed with ${res.status}`);
       setStatus("success");
@@ -99,12 +112,14 @@ export function ContactForm() {
       });
     } catch {
       setStatus("error");
+    } finally {
+      window.clearTimeout(timeout);
     }
   }
 
   if (status === "success") {
     return (
-      <div role="status" className="surface animate-fade-up p-6 sm:p-8">
+      <div ref={successRef} tabIndex={-1} role="status" className="surface p-6 sm:p-8">
         <CircleCheck size={22} aria-hidden className="text-flame-deep" />
         <h3 className="mt-4 font-display text-xl font-semibold text-ink">
           Got it — your brief is in.
@@ -121,7 +136,8 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate>
+    <form ref={formRef} onSubmit={handleSubmit} noValidate aria-busy={status === "submitting"}>
+      <fieldset className="contact-fields" disabled={status === "submitting"}>
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="contact-name" className={labelCls}>
@@ -131,6 +147,7 @@ export function ContactForm() {
             id="contact-name"
             name="name"
             type="text"
+            required
             autoComplete="name"
             placeholder="Ada Lovelace"
             className={inputCls}
@@ -153,6 +170,7 @@ export function ContactForm() {
             id="contact-email"
             name="email"
             type="email"
+            required
             autoComplete="email"
             placeholder="you@company.com"
             className={inputCls}
@@ -247,6 +265,7 @@ export function ContactForm() {
         <textarea
           id="contact-message"
           name="message"
+          required
           rows={5}
           placeholder="What are you building, and where does it need help?"
           className={`${inputCls} resize-y`}
@@ -278,7 +297,7 @@ export function ContactForm() {
 
       {status === "error" ? (
         <p role="alert" className="mt-5 text-sm leading-relaxed text-flame-deep">
-          Something broke on the way to us. Try again, or email{" "}
+          We couldn&apos;t confirm delivery. Your entries are still here. Try again, or email{" "}
           <a href={`mailto:${site.email}`} className="underline underline-offset-4">
             {site.email}
           </a>{" "}
@@ -299,6 +318,7 @@ export function ContactForm() {
           Reply within 24h
         </p>
       </div>
+      </fieldset>
     </form>
   );
 }

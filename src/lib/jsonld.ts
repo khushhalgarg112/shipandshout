@@ -50,7 +50,6 @@ export function organizationLd(): Thing {
       url: abs("/contact"),
       availableLanguage: ["English", "Hindi"],
     },
-    sameAs: [site.links.x, site.links.linkedin, site.links.passionfroot],
   };
 }
 

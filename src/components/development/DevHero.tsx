@@ -1,7 +1,7 @@
 import { Button, ButtonArrow } from "@/components/ui/Button";
 import { PageHero } from "@/components/layout/PageHero";
 import { Object3D } from "@/components/three/Object3D";
-import { engines } from "@/config/site";
+import { engines, site } from "@/config/site";
 
 /** Page hero for the Ship side of the house — layered-stack 3D object. */
 export function DevHero() {
@@ -11,14 +11,15 @@ export function DevHero() {
       eyebrow={`The ${engines.ship.label} engine`}
       title={
         <>
-          We build the thing. <span className="text-flame">Properly.</span>
+          Web, mobile and SaaS development <span className="text-flame">built to launch.</span>
         </>
       }
       lead={
         <p>
-          A senior product team shipping web apps, mobile apps and SaaS platforms — by the project,
-          by the hour, or on a maintenance plan that keeps them running. The people you scope with
-          are the people who build.
+          {site.name} builds Next.js web applications, React Native mobile apps and SaaS products.
+          You can engage the team for a fixed-scope project, hourly development or ongoing
+          maintenance. Each engagement starts with scoping so you know the deliverables, timeline
+          and cost before development begins.
         </p>
       }
       actions={

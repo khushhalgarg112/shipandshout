@@ -2,7 +2,7 @@ import { cn } from "@/lib/cn";
 
 /**
  * Infinite horizontal marquee (pure CSS — no JS cost). Children are
- * duplicated once for a seamless loop; the copy is aria-hidden.
+ * arranged in two equal groups for a seamless loop; the copy is aria-hidden.
  * Pauses on hover. Stops entirely under prefers-reduced-motion.
  */
 export function Marquee({
@@ -22,22 +22,19 @@ export function Marquee({
   return (
     <div
       className={cn(
-        "group/marquee overflow-hidden",
-        fade && "[mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]",
+        "marquee",
+        fade && "marquee-fade",
         className,
       )}
     >
       <div
         className={cn(
-          "flex w-max items-center gap-14 pr-14",
-          reverse ? "animate-marquee-reverse" : "animate-marquee",
-          "group-hover/marquee:[animation-play-state:paused]",
-          "motion-reduce:animate-none motion-reduce:w-full motion-reduce:flex-wrap motion-reduce:justify-center",
-          innerClassName,
+          "marquee-track",
+          reverse && "marquee-track-reverse",
         )}
       >
-        {children}
-        <div aria-hidden className={cn("flex items-center gap-14 motion-reduce:hidden", innerClassName)}>
+        <div className={cn("marquee-group", innerClassName)}>{children}</div>
+        <div aria-hidden className={cn("marquee-group marquee-copy", innerClassName)}>
           {children}
         </div>
       </div>

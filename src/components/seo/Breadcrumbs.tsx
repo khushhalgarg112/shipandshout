@@ -10,7 +10,7 @@ export function Breadcrumbs({ trail, className }: { trail: readonly Crumb[]; cla
   const full: Crumb[] = [{ name: "Home", path: "/" }, ...trail];
   return (
     <>
-      <nav aria-label="Breadcrumb" className={cn("text-sm", className)}>
+      <nav aria-label="Breadcrumb" className={cn("breadcrumbs text-sm", className)}>
         <ol className="flex flex-wrap items-center gap-2 text-ink-faint">
           {full.map((crumb, i) => {
             const last = i === full.length - 1;

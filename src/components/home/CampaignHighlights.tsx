@@ -22,7 +22,7 @@ export function CampaignHighlights({
         align="split"
         eyebrow={eyebrow}
         title="Numbers from real campaigns."
-        lead="No invented testimonials. Every figure below comes from a public post you can open, scroll and check yourself."
+        lead="Selected post engagement figures reported by the team. Counts can change over time; explore the linked brand campaigns below for examples of the work."
       />
       <div className="grid gap-5 md:grid-cols-3">
         {campaignHighlights.map((item, i) => {
@@ -39,11 +39,23 @@ export function CampaignHighlights({
                   className="absolute -right-10 -bottom-10 size-40 rounded-full bg-flame/15 blur-2xl transition-transform duration-700 ease-out-expo group-hover:scale-150"
                 />
                 <p className="text-xs font-medium text-ink-faint">{item.format}</p>
-                <p className="text-display mt-6 text-5xl text-ink">{primary}</p>
+                <p className="campaign-result text-display mt-6 text-ink">{primary}</p>
                 {secondary ? <p className="mt-2 text-lg text-flame-deep">{secondary}</p> : null}
                 <div className="mt-auto border-t hairline pt-5">
                   <h3 className="font-semibold text-ink">{item.brand}</h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">{item.note}</p>
+                  {item.evidence ? (
+                    <p className="mt-4 text-sm leading-relaxed text-ink-muted">
+                      <a href={item.evidence.sourceUrl} target="_blank" rel="noopener noreferrer" className="touch-target font-medium text-ink underline underline-offset-4">
+                        View source post
+                        <span className="sr-only"> (opens in a new tab)</span>
+                      </a>
+                      {" · Observed "}
+                      <time dateTime={item.evidence.observedAt}>
+                        {new Intl.DateTimeFormat("en", { dateStyle: "medium", timeZone: "UTC" }).format(new Date(`${item.evidence.observedAt}T00:00:00Z`))}
+                      </time>
+                    </p>
+                  ) : null}
                 </div>
               </article>
             </Reveal>

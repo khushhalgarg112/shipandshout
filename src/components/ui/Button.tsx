@@ -5,7 +5,7 @@ type Variant = "primary" | "secondary" | "flame" | "ghost";
 type Size = "md" | "lg";
 
 const base =
-  "group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full font-medium " +
+  "button group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full font-medium " +
   "transition-[background-color,border-color,color,transform,box-shadow] duration-300 ease-out-expo " +
   "focus-visible:outline-2 focus-visible:outline-flame-deep active:scale-[0.97]";
 

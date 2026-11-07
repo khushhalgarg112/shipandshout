@@ -12,7 +12,7 @@ import { devFaqs, devServices, engines, site } from "@/config/site";
 
 const title = "Web, App & SaaS Development";
 const description =
-  "Senior team building Next.js web apps, React Native apps and SaaS MVPs — plus SEO, AI integration, hourly development and ongoing maintenance & support.";
+  "Build Next.js web apps, React Native apps and SaaS products with a senior team. Explore project, hourly and maintenance engagements.";
 
 export const metadata = pageMetadata({
   title,

@@ -25,7 +25,8 @@ export function Counter({
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!el || motion.matches) return;
 
     let frame = 0;
     const observer = new IntersectionObserver(
@@ -46,7 +47,15 @@ export function Counter({
       { rootMargin: "0px" },
     );
     observer.observe(el);
+    const onMotionChange = () => {
+      if (!motion.matches) return;
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+      setDisplay(value);
+    };
+    motion.addEventListener("change", onMotionChange);
     return () => {
+      motion.removeEventListener("change", onMotionChange);
       observer.disconnect();
       cancelAnimationFrame(frame);
     };

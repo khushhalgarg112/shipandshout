@@ -12,8 +12,8 @@
  * Optional: data-delay="0.16" (seconds), data-y="40" (px, for up/tilt).
  */
 const source = `(function(){
-var w=window,d=document;
-if(!("IntersectionObserver" in w)||!Element.prototype.animate||w.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+var w=window,d=document,motion=w.matchMedia("(prefers-reduced-motion: reduce)");
+if(!("IntersectionObserver" in w)||!Element.prototype.animate||motion.matches)return;
 var ease="cubic-bezier(.16,1,.3,1)",seen=new WeakSet();
 function frames(el){var y=+(el.dataset.y||28);switch(el.dataset.reveal){
 case"fade":return[{opacity:0},{opacity:1}];
@@ -25,7 +25,9 @@ function add(el){if(seen.has(el))return;seen.add(el);
 var a=el.animate(frames(el),{duration:el.dataset.reveal==="grow"?1100:900,delay:(+el.dataset.delay||0)*1e3,easing:ease,fill:"backwards"});
 a.pause();el.__rv=a;io.observe(el)}
 function scan(root){if(root.nodeType!==1)return;if(root.hasAttribute("data-reveal"))add(root);root.querySelectorAll("[data-reveal]").forEach(add)}
-new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(scan)})}).observe(d.documentElement,{childList:true,subtree:true});
+var mo=new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(scan)})});
+mo.observe(d.documentElement,{childList:true,subtree:true});
+motion.addEventListener("change",function(e){if(!e.matches)return;io.disconnect();mo.disconnect();d.querySelectorAll("[data-reveal]").forEach(function(el){el.__rv&&el.__rv.cancel()})});
 scan(d.documentElement)})();`;
 
 export function RevealScript() {

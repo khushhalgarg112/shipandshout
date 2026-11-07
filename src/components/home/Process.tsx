@@ -47,8 +47,8 @@ export function Process() {
         {steps.map((step, i) => (
           <li
             key={step.number}
-            className="sticky mb-6 last:mb-0"
-            style={{ top: `calc(5.5rem + ${i * 1.25}rem)`, "--i": i } as React.CSSProperties}
+            className="process-step mb-6 last:mb-0"
+            style={{ "--i": i } as React.CSSProperties}
           >
             <article
               className={cn(

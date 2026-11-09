@@ -34,7 +34,7 @@ function FooterColumn({
 /** Dark footer: link columns, availability + live IST clock, giant extruded 3D wordmark. */
 export function Footer() {
   return (
-    <footer className="night relative overflow-hidden">
+    <footer className="site-footer night relative overflow-hidden">
       <Container className="relative pt-20 pb-10 sm:pt-24">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1.2fr]">
           <div>

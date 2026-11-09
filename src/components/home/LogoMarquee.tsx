@@ -13,18 +13,18 @@ const loop = [
 /** Brand roster as two crossing 3D tapes with each client's logo. The list is also rendered for screen readers. */
 export function LogoMarquee() {
   return (
-    <section aria-labelledby="brands-heading" className="relative">
+    <section aria-labelledby="brands-heading" className="brand-proof">
       <Container>
-        <h2 id="brands-heading" className="text-center text-sm font-medium text-ink-faint">
-          {brandPartnerships} brand partnerships — including
-        </h2>
+        <div className="brand-proof-heading">
+          <h2 id="brands-heading">Creator partnerships with teams you know.</h2>
+          <p>{brandPartnerships} brand partnerships — including</p>
+        </div>
         <ul className="sr-only">
           {brands.map((brand) => (
             <li key={brand.name}>{brand.name}</li>
           ))}
         </ul>
       </Container>
-      <div aria-hidden>
         <Ribbons
           front={brands.map((brand) => ({
             label: brand.name,
@@ -32,7 +32,6 @@ export function LogoMarquee() {
           }))}
           back={loop}
         />
-      </div>
     </section>
   );
 }

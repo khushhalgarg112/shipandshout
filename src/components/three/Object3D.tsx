@@ -38,7 +38,8 @@ export function Object3D({
     const canvas = canvasRef.current;
     if (!host || !canvas) return;
 
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let reduceMotion = motion.matches;
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     const device = navigator as Navigator & {
       deviceMemory?: number;
@@ -180,17 +181,29 @@ export function Object3D({
     ro.observe(canvas);
 
     const onPointer = (e: PointerEvent) => {
-      if (!visible) return;
+      if (!visible || reduceMotion) return;
       const rect = host.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
       pointer.tx = Math.max(-1, Math.min(1, (e.clientX - cx) / (window.innerWidth / 2)));
       pointer.ty = Math.max(-1, Math.min(1, (e.clientY - cy) / (window.innerHeight / 2)));
     };
-    if (finePointer && !reduceMotion) {
+    if (finePointer) {
       window.addEventListener("pointermove", onPointer, { passive: true });
     }
     const onVisibility = () => kick();
+    const onMotionChange = () => {
+      reduceMotion = motion.matches;
+      if (reduceMotion) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+        pointer.tx = pointer.ty = pointer.x = pointer.y = 0;
+        draw(performance.now());
+      } else {
+        kick();
+      }
+    };
+    motion.addEventListener("change", onMotionChange);
     document.addEventListener("visibilitychange", onVisibility);
     const onLost = (e: Event) => {
       e.preventDefault();
@@ -208,6 +221,7 @@ export function Object3D({
       ro.disconnect();
       window.removeEventListener("pointermove", onPointer);
       document.removeEventListener("visibilitychange", onVisibility);
+      motion.removeEventListener("change", onMotionChange);
       canvas.removeEventListener("webglcontextlost", onLost);
       gl?.getExtension("WEBGL_lose_context")?.loseContext();
       gl = null;

@@ -30,12 +30,12 @@ export function SectionHeading({
     >
       <div>
         {eyebrow ? <p className="text-eyebrow mb-5">{eyebrow}</p> : null}
-        <h2 className="text-display text-4xl text-ink sm:text-5xl md:text-6xl">{title}</h2>
+        <h2 className="section-title text-display text-ink">{title}</h2>
       </div>
       {lead ? (
         <p
           className={cn(
-            "text-base leading-relaxed text-ink-muted sm:text-lg",
+            "section-lead text-base leading-relaxed text-ink-muted sm:text-lg",
             align === "split" ? "lg:pb-2" : "mt-6",
           )}
         >

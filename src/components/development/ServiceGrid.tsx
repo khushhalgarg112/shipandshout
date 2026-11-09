@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Check,
   Globe,
@@ -12,7 +13,7 @@ import {
 import { Reveal } from "@/components/motion/Reveal";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { devServices } from "@/config/site";
+import { devServices, servicePages, servicePagePath } from "@/config/site";
 import { cn } from "@/lib/cn";
 
 const icons: Record<(typeof devServices)[number]["slug"], LucideIcon> = {
@@ -25,7 +26,7 @@ const icons: Record<(typeof devServices)[number]["slug"], LucideIcon> = {
   maintenance: Wrench,
 };
 
-/** The six dev service lines as tilt cards. Card ids are deep-link targets (footer, home). */
+/** Service cards preserve fragment targets while linking to published detail pages. */
 export function ServiceGrid() {
   return (
     <Section id="services">
@@ -38,6 +39,7 @@ export function ServiceGrid() {
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {devServices.map((service, i) => {
           const Icon = icons[service.slug];
+          const detail = servicePages.find((page) => page.serviceSlug === service.slug);
           // The ongoing-care line closes the grid as a full-width dark card.
           const wide = service.slug === "maintenance";
           return (
@@ -68,12 +70,17 @@ export function ServiceGrid() {
                   </div>
                   <h3 className="text-display mt-8 text-3xl text-ink">{service.title}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-ink-muted">{service.description}</p>
+                  {detail ? (
+                    <Link href={servicePagePath(detail)} className="touch-target mt-4 inline-block py-1.5 text-sm font-semibold text-ink underline underline-offset-4">
+                      Explore {detail.title.toLowerCase()}
+                    </Link>
+                  ) : null}
                   {wide ? (
                     <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold">
-                      <a href="#maintenance-plan" className="inline-block py-1.5 text-ink underline decoration-line-strong underline-offset-4 hover:text-flame-deep">
+                      <a href="#maintenance-plan" className="touch-target inline-block py-1.5 text-ink underline decoration-line-strong underline-offset-4 hover:text-flame-deep">
                         Monthly maintenance plans
                       </a>
-                      <a href="#hourly" className="inline-block py-1.5 text-ink underline decoration-line-strong underline-offset-4 hover:text-flame-deep">
+                      <a href="#hourly" className="touch-target inline-block py-1.5 text-ink underline decoration-line-strong underline-offset-4 hover:text-flame-deep">
                         Hourly support
                       </a>
                     </div>

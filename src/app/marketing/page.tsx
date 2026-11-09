@@ -7,11 +7,11 @@ import { CtaBand } from "@/components/home/CtaBand";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { faqLd, serviceLd, webPageLd } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
-import { audience, brandPartnerships, engines, marketingFaqs, marketingPackages, site } from "@/config/site";
+import { audience, engines, marketingFaqs, marketingPackages, site } from "@/config/site";
 
 const combined = `${audience.combined.value}${audience.combined.suffix}`;
 const title = "Creator Marketing & Sponsored Posts";
-const description = `Sponsored LinkedIn posts and X threads reaching ${combined} tech professionals, trusted by ${brandPartnerships} brands. Custom quotes, honest #ad disclosure, 7-day recaps.`;
+const description = "Book sponsored LinkedIn posts and X campaigns for AI and SaaS launches. Explore formats, review steps and campaign reporting.";
 
 export const metadata = pageMetadata({
   title,
@@ -54,7 +54,7 @@ export default function MarketingPage() {
       <CampaignTimeline />
       <Faq />
       <CtaBand
-        title={`Put your product in front of ${combined} builders.`}
+        title={`Creator channels with ${combined} combined followers.`}
         lead="One brief, one honest post, and a recap that shows exactly what it did."
         shape="waves"
         secondary={{ label: "Need it built first?", href: engines.ship.href }}

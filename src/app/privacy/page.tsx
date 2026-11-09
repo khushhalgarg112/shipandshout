@@ -15,7 +15,7 @@ export default function PrivacyPage() {
       <Breadcrumbs trail={[{ name: "Privacy", path: "/privacy" }]} className="mb-10" />
       <p className="text-eyebrow mb-4">Legal</p>
       <h1 className="text-display text-5xl text-ink sm:text-7xl">Privacy policy</h1>
-      <div className="mt-10 space-y-8 leading-relaxed text-ink-muted">
+      <div className="reading-copy mt-10 space-y-8 leading-relaxed text-ink-muted">
         <div>
           <h2 className="mb-2 text-display text-2xl text-ink">What we collect</h2>
           <p>
@@ -45,7 +45,7 @@ export default function PrivacyPage() {
           <h2 className="mb-2 text-display text-2xl text-ink">Your rights</h2>
           <p>
             Want your inquiry data deleted, or have any privacy question? Email{" "}
-            <a href={`mailto:${site.email}`} className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:text-flame-deep">
+            <a href={`mailto:${site.email}`} className="touch-target font-medium text-ink underline decoration-line-strong underline-offset-4 hover:text-flame-deep">
               {site.email}
             </a>{" "}
             and we&apos;ll take care of it.

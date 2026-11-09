@@ -59,6 +59,34 @@ Change a price or follower count there and it updates everywhere (pages, JSON-LD
   `sitemap.ts`, `robots.ts`, `manifest.ts`, branded `not-found.tsx`
 - Optional: `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` adds the Search Console meta tag
 
+## Search and AI-readable content
+
+- `/development/saas-mvp-development` and `/development/ai-integration` are prerendered
+  service pages. Their content, FAQs, metadata and sitemap paths come from `servicePages`
+  in `src/config/site.ts`; service cards and the footer link to them. Existing fragment links
+  on `/development` continue to work.
+- `/llms.txt` and `/llms-full.txt` are static text responses generated from the same public
+  config by `src/lib/llms.ts`. These optional summaries do not guarantee AI citations.
+- The sitemap omits `lastmod` until real per-page modification dates are available.
+- `NEXT_PUBLIC_SITE_URL` must be an HTTPS origin (for example `https://shipnshout.com`),
+  without a path, credentials, query or fragment. Trailing `/` is normalized.
+- To cite a campaign highlight, add `evidence: { sourceUrl, observedAt: "YYYY-MM-DD" }`
+  to its record in `campaignHighlights`. Use the exact post and date its displayed counts
+  were observed. No evidence dates or post mappings are inferred from the audit date.
+
+After deployment, verify the canonical host/HTTPS redirects, GSC sitemap coverage,
+GA4's existing `generate_lead` event and actual contact email delivery. Host-level headers
+and crawler access require checks on the deployed site. The code audit and proposed
+measurement plan are in `docs/SEO_AEO_GEO_AUDIT.md`.
+Implemented changes and validation limits are in `docs/SEO_IMPLEMENTATION.md`.
+Responsive/accessibility fixes, before/after excerpts and the browser test matrix are in
+`docs/FRONTEND_REVIEW.md`.
+
+Run `npm run check:seo` against a running production build (`npm run build`, then
+`npm start`) to verify server-rendered metadata, canonical parameters, schema, share images,
+sitemap coverage, text summaries and 404 behavior. `SEO_CHECK_BASE_URL` selects another
+server; use the build's `NEXT_PUBLIC_SITE_URL` when checking a non-default canonical origin.
+
 ## Sharing the dev server (ngrok)
 
 `next.config.ts` allows `*.ngrok-free.app`, `*.ngrok.app`, `*.ngrok.io` (and `.dev`) via

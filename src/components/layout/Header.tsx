@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button, ButtonArrow } from "@/components/ui/Button";
@@ -8,6 +9,7 @@ import { Wordmark } from "@/components/brand/Wordmark";
 import { socials, SocialLink } from "@/components/layout/SocialLinks";
 import { nav } from "@/config/site";
 import { cn } from "@/lib/cn";
+import { Container } from "@/components/ui/Container";
 
 const isActive = (pathname: string, href: string) =>
   pathname === href || pathname.startsWith(`${href}/`);
@@ -15,7 +17,23 @@ const isActive = (pathname: string, href: string) =>
 /** Sticky blur nav: wordmark, active-page marker, one CTA, full-screen mobile menu. */
 export function Header() {
   const [open, setOpen] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
+
+  const containTab = (event: React.KeyboardEvent<HTMLDialogElement>) => {
+    if (event.key !== "Tab") return;
+    const controls = event.currentTarget.querySelectorAll<HTMLElement>("a[href], button:not([disabled])");
+    const first = controls[0];
+    const last = controls[controls.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last?.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first?.focus();
+    }
+  };
 
   // Close the mobile menu on navigation (state adjusted during render, not in an effect).
   const [prevPathname, setPrevPathname] = useState(pathname);
@@ -24,27 +42,35 @@ export function Header() {
     setOpen(false);
   }
 
-  // Lock page scroll and allow Escape while the mobile menu is open.
+  // Native modal behavior contains focus, makes the page inert and handles Escape.
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    document.documentElement.style.overflow = "hidden";
-    window.addEventListener("keydown", onKey);
+    const dialog = dialogRef.current;
+    if (!open || !dialog) return;
+    const root = document.documentElement;
+    const previousOverflow = root.style.overflow;
+    const desktop = window.matchMedia("(min-width: 48rem)");
+    const closeOnDesktop = () => { if (desktop.matches) setOpen(false); };
+    dialog.showModal();
+    closeRef.current?.focus({ preventScroll: true });
+    root.style.overflow = "hidden";
+    desktop.addEventListener("change", closeOnDesktop);
+    closeOnDesktop();
     return () => {
-      document.documentElement.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
+      desktop.removeEventListener("change", closeOnDesktop);
+      root.style.overflow = previousOverflow;
+      dialog.close();
     };
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50">
+    <header className="site-header sticky top-0 z-50">
       {/* Blur lives on a background layer: backdrop-filter on the header itself
           would become the containing block for the fixed mobile menu. */}
       <div
         aria-hidden
         className="absolute inset-0 -z-10 border-b hairline bg-canvas/80 backdrop-blur-xl backdrop-saturate-150"
       />
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10">
+      <Container className="site-header-row">
         <Link href="/" className="font-display text-lg font-semibold tracking-tight text-ink">
           <Wordmark />
           <span className="sr-only"> — home</span>
@@ -78,10 +104,11 @@ export function Header() {
 
         <button
           type="button"
-          onClick={() => setOpen((v) => !v)}
+          onClick={() => setOpen(true)}
           aria-expanded={open}
           aria-controls="mobile-menu"
-          aria-label={open ? "Close menu" : "Open menu"}
+          aria-haspopup="dialog"
+          aria-label="Open menu"
           className="relative inline-flex size-11 items-center justify-center rounded-full bg-ink text-canvas md:hidden"
         >
           <span
@@ -99,14 +126,16 @@ export function Header() {
             )}
           />
         </button>
-      </div>
+      </Container>
 
-      {open ? (
-        <div
-          id="mobile-menu"
-          className="fixed inset-x-0 top-16 bottom-0 overflow-y-auto border-t hairline bg-canvas md:hidden"
-        >
-          <nav aria-label="Mobile" className="flex min-h-full flex-col px-5 pt-6 pb-10">
+      <dialog ref={dialogRef} id="mobile-menu" className="mobile-menu" aria-labelledby="mobile-menu-title" onKeyDown={containTab} onClose={() => setOpen(false)}>
+        <div className="mobile-menu-heading site-container">
+          <h2 id="mobile-menu-title" className="text-eyebrow">Site navigation</h2>
+          <button ref={closeRef} type="button" onClick={() => setOpen(false)} aria-label="Close menu" className="mobile-menu-close">
+            <X size={20} aria-hidden />
+          </button>
+        </div>
+          <nav aria-label="Mobile" className="mobile-menu-content site-container">
             <ul>
               {[...nav, { label: "Contact", href: "/contact" }].map((item, i) => (
                 <li
@@ -116,6 +145,7 @@ export function Header() {
                 >
                   <Link
                     href={item.href}
+                    onNavigate={() => setOpen(false)}
                     aria-current={isActive(pathname, item.href) ? "page" : undefined}
                     className={cn(
                       "flex items-center justify-between py-4 text-display text-4xl",
@@ -131,7 +161,7 @@ export function Header() {
               ))}
             </ul>
             <div className="mt-auto pt-10">
-              <Button href="/contact" size="lg" className="w-full">
+              <Button href="/contact" size="lg" className="w-full" onNavigate={() => setOpen(false)}>
                 Start a project
                 <ButtonArrow />
               </Button>
@@ -142,8 +172,7 @@ export function Header() {
               </div>
             </div>
           </nav>
-        </div>
-      ) : null}
+      </dialog>
     </header>
   );
 }

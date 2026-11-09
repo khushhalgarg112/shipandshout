@@ -1,12 +1,11 @@
 import { Marquee } from "@/components/ui/Marquee";
-import { cn } from "@/lib/cn";
+import { RibbonStage } from "@/components/motion/RibbonStage";
 
 export type RibbonItem = { label: string; icon?: React.ReactNode };
 
 /**
- * Two marquee tapes crossing in 3D space — flame over ink. Pure CSS: each
- * tape is rotated on X/Z inside a perspective stage; the marquees inside are
- * the same compositor-only animation used elsewhere.
+ * In-flow tapes: compact separate rows on phones and gently angled on desktop.
+ * Reduced motion presents all items without rotation or clipped duplicates.
  */
 export function Ribbons({
   front,
@@ -18,30 +17,30 @@ export function Ribbons({
   className?: string;
 }) {
   return (
-    <div className={cn("ribbon-stage relative overflow-hidden py-14 sm:py-20", className)}>
-      <div aria-hidden className="ribbon ribbon-b absolute inset-x-[-5%] top-1/2 -translate-y-1/2 bg-ink py-3.5 text-canvas sm:py-4">
+    <RibbonStage className={className}>
+      <div className="ribbon ribbon-b">
         <Marquee reverse fade={false}>
           {back.map((item) => (
-            <span key={item} className="flex items-center gap-10 text-display text-2xl whitespace-nowrap sm:text-3xl">
+            <span key={item} className="ribbon-item">
               {item}
-              <span className="size-2 rounded-full bg-flame" />
+              <span className="ribbon-dot" />
             </span>
           ))}
         </Marquee>
       </div>
-      <div className="ribbon ribbon-a relative mx-[-5%] bg-flame py-3 text-flame-ink sm:py-3.5">
+      <div className="ribbon ribbon-a">
         <Marquee fade={false}>
           {front.map((item) => (
-            <span key={item.label} className="flex items-center gap-10 text-display text-2xl whitespace-nowrap sm:text-3xl">
-              <span className="flex items-center gap-3">
+            <span key={item.label} className="ribbon-item">
+              <span className="ribbon-item-label">
                 {item.icon}
                 {item.label}
               </span>
-              <span aria-hidden className="text-flame-ink/50">✦</span>
+              <span className="ribbon-separator" aria-hidden>✦</span>
             </span>
           ))}
         </Marquee>
       </div>
-    </div>
+    </RibbonStage>
   );
 }

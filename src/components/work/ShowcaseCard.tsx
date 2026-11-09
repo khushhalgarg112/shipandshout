@@ -8,10 +8,10 @@ export function ShowcaseCard({ item }: { item: ShowcaseItem }) {
     <Link
       href={item.href}
       data-tilt="6"
-      className="tilt group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border hairline bg-card hover:border-line-strong"
+      className="showcase-card tilt group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border hairline bg-card hover:border-line-strong"
     >
       <span className="tilt-glare z-10" />
-      <div className="relative overflow-hidden border-b hairline bg-sunken p-6 sm:p-8">
+      <div className="showcase-preview relative overflow-hidden border-b hairline bg-sunken p-6 sm:p-8">
         <WorkPreview
           variant={item.art}
           className="transition-transform duration-700 ease-out-expo group-hover:scale-[1.04] group-hover:-rotate-1"

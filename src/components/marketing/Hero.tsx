@@ -6,7 +6,7 @@ import { site, founder, audience, engines } from "@/config/site";
 const receipts = [
   { value: audience.linkedin.followers, label: "on LinkedIn" },
   { value: audience.x.followers, label: "on X" },
-  { value: `${audience.stats[1].value}${audience.stats[1].suffix}`, label: "content impressions" },
+  { value: `${audience.stats[1].value}${audience.stats[1].suffix}`, label: "lifetime X impressions" },
 ] as const;
 
 /** Marketing hero — the Shout pitch in one screenful, broadcast-wave 3D object. */
@@ -17,15 +17,15 @@ export function Hero() {
       eyebrow={`The ${engines.shout.label} engine`}
       title={
         <>
-          Marketing with <span className="text-flame">receipts</span>, not vibes.
+          Creator marketing for <span className="text-flame">AI and SaaS launches.</span>
         </>
       }
       lead={
         <p>
-          Sponsored campaigns through {founder.displayName}&apos;s audience of{" "}
-          {audience.combined.value}
-          {audience.combined.suffix} engineers, founders, and AI-curious professionals. A quote built
-          around your launch, one revision round, and a performance recap after every campaign.
+          {site.name} runs sponsored LinkedIn posts and X campaigns through {founder.name}&apos;s
+          creator channels. Formats include individual posts, coordinated bundles, educational
+          threads and launch-day quote tweets. Each campaign includes a brief, a review round,
+          sponsorship disclosure and a performance recap, with pricing quoted for your scope.
         </p>
       }
       actions={

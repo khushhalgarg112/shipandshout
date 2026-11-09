@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Reveal } from "@/components/motion/Reveal";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { engagementAnswer } from "@/config/site";
 import { cn } from "@/lib/cn";
 
 /** Ids are deep-link targets (footer, FAQ, contact). No public prices — every model is quoted on a call. */
@@ -77,8 +78,8 @@ export function EngagementModels() {
       <SectionHeading
         align="split"
         eyebrow="02 — Engagement models"
-        title="Pick how we plug in."
-        lead="By the project, by the hour, on a monthly plan or embedded in your team — same senior people and standards in every shape. Pricing is scoped with you on a short call."
+        title="Which development engagement fits your product?"
+        lead={engagementAnswer}
       />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
         {models.map((model, i) => (
@@ -114,7 +115,7 @@ export function EngagementModels() {
               </ul>
               <Link
                 href="/contact"
-                className="group mt-7 inline-flex items-center gap-2 self-start py-1.5 text-sm font-semibold text-ink"
+                className="touch-target group mt-7 inline-flex items-center gap-2 self-start py-1.5 text-sm font-semibold text-ink"
               >
                 Discuss {model.name.toLowerCase()}
                 <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
@@ -124,6 +125,29 @@ export function EngagementModels() {
             </article>
           </Reveal>
         ))}
+      </div>
+      <div className="engagement-comparison mt-14 overflow-x-auto rounded-2xl border hairline" role="region" aria-label="Development engagement comparison" tabIndex={0}>
+        <table className="w-full min-w-[40rem] text-left text-sm">
+          <caption className="p-5 text-left font-semibold text-ink">Development engagement options</caption>
+          <thead className="border-y hairline bg-sunken text-ink">
+            <tr>
+              <th scope="col" className="px-5 py-4">Engagement</th>
+              <th scope="col" className="px-5 py-4">Best fit</th>
+              <th scope="col" className="px-5 py-4">Billing basis</th>
+            </tr>
+          </thead>
+          <tbody>
+            {models.map((model) => (
+              <tr key={model.id} className="border-b hairline last:border-b-0">
+                <th scope="row" className="px-5 py-4 font-medium text-ink">
+                  <Link href={`#${model.id}`} className="underline underline-offset-4">{model.name}</Link>
+                </th>
+                <td className="px-5 py-4 leading-relaxed text-ink-muted">{model.fit}</td>
+                <td className="px-5 py-4 text-ink-muted">{model.billing}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </Section>
   );

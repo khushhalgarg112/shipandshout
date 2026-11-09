@@ -33,9 +33,17 @@ export function Audience() {
     <Section id="audience" className="border-t hairline">
       <SectionHeading
         eyebrow="01 — The audience"
-        title="Who actually sees your post."
+        title="The creator channels behind your campaign."
         lead={`The numbers below come straight from the public media kit — the same ones every brand sees before booking ${founder.displayName}.`}
       />
+      <p className="mb-8 text-sm leading-relaxed text-ink-muted">
+        <a href={site.links.passionfroot} target="_blank" rel="noopener noreferrer" className="touch-target font-medium text-ink underline underline-offset-4">
+          View the source media kit
+          <span className="sr-only"> (opens in a new tab)</span>
+        </a>
+        . Combined followers are the sum of platform counts, which may overlap. They are not
+        unique reach or guaranteed campaign impressions. Check the media kit for current figures.
+      </p>
 
       <div className="grid gap-5 md:grid-cols-2">
         {platforms.map((platform, i) => (

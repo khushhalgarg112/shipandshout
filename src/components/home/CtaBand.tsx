@@ -46,7 +46,7 @@ export function CtaBand({
           <Reveal delay={0.24}>
             <a
               href={`mailto:${site.email}`}
-              className="mt-6 inline-block py-2 text-sm text-ink-muted underline decoration-line-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-flame"
+              className="touch-target mt-6 inline-block py-2 text-sm text-ink-muted underline decoration-line-strong underline-offset-4 transition-colors hover:text-ink hover:decoration-flame"
             >
               or email {site.email}
             </a>

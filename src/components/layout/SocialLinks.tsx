@@ -77,7 +77,7 @@ export function SocialLink({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        "inline-flex min-h-8 items-center gap-2.5 text-sm text-ink-muted transition-colors duration-300 hover:text-ink",
+        "touch-target inline-flex items-center gap-2.5 text-sm text-ink-muted transition-colors duration-300 hover:text-ink",
         className,
       )}
     >

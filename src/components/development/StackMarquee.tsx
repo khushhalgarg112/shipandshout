@@ -29,9 +29,7 @@ export function StackMarquee() {
           <li key={name}>{name}</li>
         ))}
       </ul>
-      <div aria-hidden>
         <Ribbons front={stack.map((label) => ({ label }))} back={principles} />
-      </div>
     </section>
   );
 }

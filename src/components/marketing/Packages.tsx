@@ -50,7 +50,7 @@ export function Packages() {
                     )}
                   >
                     <span className="tilt-glare" />
-                    <div className="flex items-start justify-between gap-3">
+                    <div className="package-labels flex items-start justify-between gap-3">
                       <p className="min-w-0 font-mono text-xs tracking-wide text-ink-faint">{pkg.format}</p>
                       {pkg.highlight ? (
                         <Badge tone="flame" className="shrink-0 whitespace-nowrap">

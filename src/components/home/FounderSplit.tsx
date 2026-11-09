@@ -56,7 +56,7 @@ export function FounderSplit() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`${link.aria} (opens in a new tab)`}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink transition-colors duration-300 hover:border-ink hover:bg-ink hover:text-canvas"
+                    className="touch-target inline-flex items-center gap-1.5 rounded-full border border-line-strong px-4 py-2 text-sm font-medium text-ink transition-colors duration-300 hover:border-ink hover:bg-ink hover:text-canvas"
                   >
                     {link.label}
                     <ArrowUpRight size={16} aria-hidden />
